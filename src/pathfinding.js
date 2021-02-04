@@ -3,7 +3,8 @@
  *
  * WARNING: SLOPPY CODE AHEAD! THIS IS MY FIRST TYPESCRIPT PROJECT EVER.
  *
- *  The (AI?) pathfinds(?) through
+ *  The (AI?) pathfinds(?) through the "blocks" that it's given, the open spaces it can travel through are denotated
+ *  by a "y", the finish line it searches for is denotated by an "f", the AI is denotated by "a" and the closed parts that it is not allowed to get into are denotated with "x"
  */
 var AI = /** @class */ (function () {
     function AI() {
@@ -23,8 +24,8 @@ var AI = /** @class */ (function () {
             x: 0
         };
         this.prevIndex = {
-            y: 3,
-            x: 0
+            y: undefined,
+            x: undefined
         };
     }
     /**
@@ -70,10 +71,12 @@ var AI = /** @class */ (function () {
             return 0;
         }
         try {
-            if (this.blocks[y][x] === "y" || this.blocks[y][x] === "f")
+            if (this.blocks[y][x] === "y" || this.blocks[y][x] === "f") {
                 return 1;
-            else
+            }
+            else {
                 return 0;
+            }
         }
         catch (e) {
             return 0;
@@ -160,7 +163,7 @@ var AI = /** @class */ (function () {
         var x = this.currentIndex.x;
         console.log("current location: [" + this.location() + "]");
         if (this.target.y === y && this.target.x === x) {
-            console.log("WE are da winneredes!");
+            console.log("Finish Line Reached!");
             console.log("path taken: " + this.path);
             return 1;
         }
@@ -208,16 +211,19 @@ var AI = /** @class */ (function () {
     return AI;
 }());
 var ai;
+ai = new AI();
 var Pathway = /** @class */ (function () {
     function Pathway() {
         this.blocks = [[], []];
     }
     Pathway.prototype.setupPathway = function () {
         this.blocks = [
-            ["y", "y", "y", "f"],
-            ["y", "x", "x", "x"],
-            ["y", "y", "x", "x"],
-            ["s", "y", "x", "x"]
+            ["x", "x", "x", "x", "x", "y", "f"],
+            ["x", "y", "y", "y", "x", "y", "x"],
+            ["x", "y", "x", "y", "x", "y", "x"],
+            ["y", "y", "x", "y", "y", "y", "x"],
+            ["y", "x", "x", "x", "x", "x", "s"],
+            ["y", "y", "y", "y", "y", "y", "y"]
         ];
         var startingPoint = { x: 0, y: 0 };
         var x = ""; // sloppy codes could be better probably idk just dont want tos
@@ -229,12 +235,15 @@ var Pathway = /** @class */ (function () {
                     startingPoint.y = i; // down (REMEMBER THIS ! IT'S WEIRD!)
                     startingPoint.x = j; // across
                 }
+                else if (this.blocks[i][j] === "f") {
+                    ai.target.x = j;
+                    ai.target.y = i;
+                }
                 x += this.blocks[i][j] + (j < this.blocks[i].length - 1 ? "," : "");
             }
             x += "]\n";
         }
         console.log("starting \"maze\":\n" + x);
-        ai = new AI();
         ai.currentIndex.x = startingPoint.x;
         ai.currentIndex.y = startingPoint.y;
         ai.setPath(this.blocks);
