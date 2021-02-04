@@ -1,3 +1,10 @@
+/**
+ *  heres a little pathfinding (sure?) thing that I made instead of doing my schoolwork
+ *
+ * WARNING: SLOPPY CODE AHEAD! THIS IS MY FIRST TYPESCRIPT PROJECT EVER.
+ *
+ *  The (AI?) pathfinds(?) through
+ */
 var AI = /** @class */ (function () {
     function AI() {
         this.target = {
@@ -190,18 +197,18 @@ var AI = /** @class */ (function () {
     return AI;
 }());
 var ai;
-var Pathwax = /** @class */ (function () {
-    function Pathwax() {
+var Pathway = /** @class */ (function () {
+    function Pathway() {
         this.blocks = [[], []];
     }
-    Pathwax.prototype.setupPathwax = function () {
+    Pathway.prototype.setupPathway = function () {
         this.blocks = [
             ["x", "x", "x", "f"],
             ["y", "y", "y", "y"],
             ["y", "x", "x", "x"],
             ["a", "x", "x", "x"]
         ];
-        var x = "";
+        var x = ""; // sloppy codes could be better probably idk just dont want tos
         for (var i = 0; i < this.blocks.length; i++) {
             x += "[";
             for (var j = 0; j < this.blocks[i].length; j++) {
@@ -217,6 +224,6 @@ var Pathwax = /** @class */ (function () {
         ai.currentIndex.y = 3;
         ai.setPath(this.blocks);
     };
-    return Pathwax;
+    return Pathway;
 }());
-new Pathwax().setupPathwax();
+new Pathway().setupPathway();
