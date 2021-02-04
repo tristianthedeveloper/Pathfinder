@@ -7,6 +7,13 @@
  */
 var AI = /** @class */ (function () {
     function AI() {
+        this.path = "";
+        this.paths = {
+            LEFT: "left ",
+            RIGHT: "right ",
+            UP: "up ",
+            DOWN: "down "
+        };
         this.target = {
             y: 0,
             x: 0
@@ -153,14 +160,15 @@ var AI = /** @class */ (function () {
         var x = this.currentIndex.x;
         console.log("current location: [" + this.location() + "]");
         if (this.target.y === y && this.target.x === x) {
-            console.log("WE WIN!");
+            console.log("WE WINNED!");
+            console.log("path taken: " + this.path);
             return 1;
         }
         if (this.getUp() === 1) {
-            console.log("moving up");
             this.prevIndex.x = this.currentIndex.x;
             this.prevIndex.y = this.currentIndex.y;
             this.moveUp();
+            this.path += this.paths.UP;
             return 0;
         }
         if (this.getDown() === 1) {
@@ -168,6 +176,7 @@ var AI = /** @class */ (function () {
             this.prevIndex.x = this.currentIndex.x;
             this.prevIndex.y = this.currentIndex.y;
             this.moveDown();
+            this.path += this.paths.DOWN;
             return 0;
         }
         if (this.getLeft() === 1) {
@@ -175,6 +184,7 @@ var AI = /** @class */ (function () {
             this.prevIndex.x = this.currentIndex.x;
             this.prevIndex.y = this.currentIndex.y;
             this.moveLeft();
+            this.path += this.paths.LEFT;
             return 0;
         }
         if (this.getRight() === 1) {
@@ -182,6 +192,7 @@ var AI = /** @class */ (function () {
             this.prevIndex.y = this.currentIndex.y;
             console.log("right");
             this.moveRight();
+            this.path += this.paths.RIGHT;
             return 0;
         }
     };
@@ -192,7 +203,7 @@ var AI = /** @class */ (function () {
         this.redrawPath();
         setTimeout(function () {
             _this.begin();
-        }, 2000);
+        }, 200); // this is for effect!
     };
     return AI;
 }());
@@ -203,25 +214,29 @@ var Pathway = /** @class */ (function () {
     }
     Pathway.prototype.setupPathway = function () {
         this.blocks = [
-            ["x", "x", "x", "f"],
-            ["y", "y", "y", "y"],
+            ["y", "y", "y", "f"],
             ["y", "x", "x", "x"],
-            ["a", "x", "x", "x"]
+            ["y", "y", "x", "x"],
+            ["s", "y", "x", "x"]
         ];
+        var startingPoint = { x: 0, y: 0 };
         var x = ""; // sloppy codes could be better probably idk just dont want tos
         for (var i = 0; i < this.blocks.length; i++) {
             x += "[";
             for (var j = 0; j < this.blocks[i].length; j++) {
+                if (this.blocks[i][j] === "s") {
+                    this.blocks[i][j] = "a"; // give it a configurable starting point?
+                    startingPoint.y = i; // down (REMEMBER THIS ! IT'S WEIRD!)
+                    startingPoint.x = j; // across
+                }
                 x += this.blocks[i][j] + (j < this.blocks[i].length - 1 ? "," : "");
             }
             x += "]\n";
         }
-        console.log("starting path:\n" + x);
+        console.log("starting \"maze\":\n" + x);
         ai = new AI();
-        console.log("[0][3] " + this.blocks[0][3]);
-        console.log("[3][0] " + this.blocks[3][0]);
-        ai.currentIndex.x = 0;
-        ai.currentIndex.y = 3;
+        ai.currentIndex.x = startingPoint.x;
+        ai.currentIndex.y = startingPoint.y;
         ai.setPath(this.blocks);
     };
     return Pathway;
