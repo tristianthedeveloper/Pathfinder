@@ -160,7 +160,7 @@ var AI = /** @class */ (function () {
         var x = this.currentIndex.x;
         console.log("current location: [" + this.location() + "]");
         if (this.target.y === y && this.target.x === x) {
-            console.log("WE WINNED!");
+            console.log("WE are da winneredes!");
             console.log("path taken: " + this.path);
             return 1;
         }

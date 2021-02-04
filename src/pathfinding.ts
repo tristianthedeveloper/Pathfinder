@@ -188,7 +188,7 @@ class AI {
         var x = this.currentIndex.x;
         console.log(`current location: [${this.location()}]`);
         if (this.target.y === y && this.target.x === x) {
-            console.log("WE WINNED!");
+            console.log("Finish Line Reached!");
 
             console.log(`path taken: ${this.path}`);
 
